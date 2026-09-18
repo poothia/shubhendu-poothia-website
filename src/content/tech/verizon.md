@@ -1,7 +1,7 @@
 ---
 title: "5G Cloud Platform Research Engineer"
 company: "Verizon India"
-role: "Cloud Architect"
+role: "MTS II - Systems Engineer"
 location: "Hyderabad, India"
 startDate: "Aug 2019"
 endDate: "Jan 2021"
