@@ -1,7 +1,7 @@
 ---
-title: "MTS II — Cloud Architect"
+title: "Cloud Consultant-III (Specialist) "
 company: "Hewlett Packard Enterprise"
-role: "MTS II - Systems Engineer"
+role: "Cloud Native Solution Architect"
 location: "Bengaluru, India"
 startDate: "Jan 2021"
 endDate: "Nov 2022"
