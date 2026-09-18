@@ -1,0 +1,143 @@
+---
+import Page from '../../layouts/Page.astro';
+import ExperienceCard from '../../components/ExperienceCard.astro';
+import CertBadge from '../../components/CertBadge.astro';
+import { getCollection } from 'astro:content';
+
+const roles = (await getCollection('tech')).sort((a, b) => a.data.order - b.data.order);
+
+const skills = [
+  { category: 'Languages', items: ['Python', 'Golang'] },
+  { category: 'Platforms', items: ['OpenShift', 'Kubernetes', 'OpenStack', 'Docker'] },
+  { category: 'GitOps', items: ['ArgoCD', 'GitLab CI', 'GitHub Actions'] },
+  { category: 'Automation', items: ['Ansible', 'Shell', 'Terraform'] },
+  { category: 'Cloud', items: ['AWS', 'Hybrid Cloud', 'Bare Metal (MAAS)'] },
+  { category: 'Other', items: ['ManageIQ', 'OpenFAAS', 'Istio', 'KVM', 'Vagrant'] },
+];
+
+const certs = [
+  { name: 'CKA: Certified Kubernetes Administrator', url: 'https://www.credly.com/badges/979dfaa7-b5be-4929-a184-54f68724d8ea/public_url' },
+  { name: 'CKAD: Certified Kubernetes App Developer', url: 'https://www.credly.com/badges/709796cf-d2fd-4eba-bfd5-6c56de2dec16/public_url' },
+  { name: 'KCNA: Kubernetes & Cloud Native Associate', url: 'https://www.credly.com/badges/35e76ae5-ff59-48ae-8fa0-b7185040b4fc/public_url' },
+  { name: 'LFCA: Linux Foundation Certified IT Associate', url: 'https://www.credly.com/badges/5e42cdc0-1f9f-4c8e-91a0-a73e6d0ff741/public_url' },
+  { name: 'AWS Certified Cloud Practitioner', url: 'https://www.credly.com/badges/02d06305-2c43-4bb1-9c10-40cece083821/public_url' },
+];
+---
+
+<Page title="Experience" description="Cloud Native Architect — 10+ years building enterprise platforms with Kubernetes, OpenShift, and OpenStack.">
+
+  <div class="section-header">
+    <span class="section-header__eyebrow">Career</span>
+    <h1>Experience</h1>
+    <p class="text-dim" style="margin-top: var(--space-md); font-size: 1rem; max-width: 60ch;">
+      10+ years of expertise in OpenShift, Kubernetes &amp; OpenStack — driving enterprise cloud transformation, GitOps, and open-source innovation.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Experience Timeline -->
+  <section class="section--tight">
+    <h2 style="margin-bottom: var(--space-xl);">Roles</h2>
+    <div class="timeline">
+      {roles.map((role) => (
+        <ExperienceCard
+          company={role.data.company}
+          role={role.data.role}
+          location={role.data.location}
+          startDate={role.data.startDate}
+          endDate={role.data.endDate}
+          skills={role.data.skills}
+          slug={role.id.replace(/\.md$/, '')}
+        />
+      ))}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- Skills -->
+  <section class="section--tight">
+    <h2 style="margin-bottom: var(--space-xl);">Skills</h2>
+    <div class="skills-table">
+      {skills.map((group) => (
+        <div class="skills-table__row">
+          <span class="skills-table__category">{group.category}</span>
+          <div class="skills-grid">
+            {group.items.map((item) => (
+              <span class="tag tag--accent">{item}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- Certifications -->
+  <section class="section--tight">
+    <h2 style="margin-bottom: var(--space-xl);">Certifications</h2>
+    <div class="certs-grid">
+      {certs.map((cert) => (
+        <CertBadge name={cert.name} url={cert.url} />
+      ))}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- Education -->
+  <section class="section--tight">
+    <h2 style="margin-bottom: var(--space-lg);">Education</h2>
+    <div class="card" style="max-width: 500px;">
+      <span class="card__label">2012 — 2016</span>
+      <h3 class="card__title">B.Tech — Information Technology</h3>
+      <p class="text-dim" style="font-size: 0.875rem;">Dr. AITH Kanpur (AKTU)</p>
+      <p class="text-dim" style="font-size: 0.8125rem; margin-top: var(--space-sm);">GATE 2016 qualified — Score: 353</p>
+    </div>
+  </section>
+
+</Page>
+
+<style>
+  .skills-table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .skills-table__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-bottom: var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .skills-table__row {
+      grid-template-columns: 150px 1fr;
+      align-items: center;
+    }
+  }
+
+  .skills-table__category {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+  }
+
+  .certs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .certs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

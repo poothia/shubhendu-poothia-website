@@ -1,0 +1,113 @@
+---
+import Page from '../../layouts/Page.astro';
+import { getCollection, render } from 'astro:content';
+
+const talks = (await getCollection('talks')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<Page title="Talks" description="Conference talks, webinars, and speaking engagements by Shubhendu Poothia.">
+
+  <div class="section-header">
+    <span class="section-header__eyebrow">Speaking</span>
+    <h1>Talks</h1>
+    <p class="text-dim" style="margin-top: var(--space-md); font-size: 1rem;">
+      Conference talks, webinars, and speaking engagements on cloud-native technology.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="talks-list">
+    {talks.map(async (talk) => {
+      const { Content } = await render(talk);
+      return (
+        <article class="talk-entry">
+          <div class="talk-entry__meta">
+            <span class="talk-entry__date">
+              {talk.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+            </span>
+            <span class="talk-entry__location">{talk.data.location}</span>
+          </div>
+          <div class="talk-entry__content">
+            <h2 class="talk-entry__event">{talk.data.event}</h2>
+            <h3 class="talk-entry__title">{talk.data.title}</h3>
+            <div class="prose" style="margin-top: var(--space-md);">
+              <Content />
+            </div>
+            <div class="talk-entry__links" style="margin-top: var(--space-md);">
+              {talk.data.videoUrl && (
+                <a href={talk.data.videoUrl} target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 0.75rem;">
+                  Watch Video
+                </a>
+              )}
+              {talk.data.slidesUrl && (
+                <a href={talk.data.slidesUrl} target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 0.75rem;">
+                  View Slides
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+
+</Page>
+
+<style>
+  .talks-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .talk-entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding: var(--space-xl) 0;
+    border-bottom: var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .talk-entry {
+      grid-template-columns: 180px 1fr;
+    }
+  }
+
+  .talk-entry__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .talk-entry__date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text-dim);
+  }
+
+  .talk-entry__location {
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+  }
+
+  .talk-entry__event {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    margin-bottom: var(--space-xs);
+  }
+
+  .talk-entry__title {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--color-text-dim);
+  }
+
+  .talk-entry__links {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+</style>

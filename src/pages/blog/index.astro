@@ -1,0 +1,55 @@
+---
+import Page from '../../layouts/Page.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Page title="Writing" description="Writing about cloud architecture, open source, and building systems at scale.">
+
+  <div class="section-header">
+    <span class="section-header__eyebrow">Blog</span>
+    <h1>Writing</h1>
+    <p class="text-dim" style="margin-top: var(--space-md); font-size: 1rem;">
+      Thoughts on cloud, infrastructure, and engineering.
+    </p>
+  </div>
+
+  <hr class="divider" />
+
+  {posts.length === 0 ? (
+    <p class="text-dim" style="padding-block: var(--space-xl);">
+      No posts yet. Check back soon.
+    </p>
+  ) : (
+    <div class="blog-list">
+      {posts.map((post) => (
+        <BlogCard
+          title={post.data.title}
+          date={post.data.date}
+          description={post.data.description}
+          tags={post.data.tags}
+          slug={post.id.replace(/\.md$/, '')}
+        />
+      ))}
+    </div>
+  )}
+
+</Page>
+
+<style>
+  .blog-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .blog-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,134 @@
+---
+import Page from '../../layouts/Page.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((p) => !p.data.draft)
+    .map((post) => ({
+      params: { slug: post.id.replace(/\.md$/, '') },
+      props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const allPosts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+const prevPost = allPosts[currentIndex + 1];
+const nextPost = allPosts[currentIndex - 1];
+---
+
+<Page title={post.data.title} description={post.data.description}>
+
+  <div style="margin-bottom: var(--space-lg);">
+    <a href="/blog/" class="btn" style="font-size: 0.75rem; padding: var(--space-xs) var(--space-sm);">&larr; All posts</a>
+  </div>
+
+  <header class="post-header">
+    <span class="post-header__date">
+      {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </span>
+    <h1 class="post-header__title">{post.data.title}</h1>
+    {post.data.tags.length > 0 && (
+      <div class="post-header__tags">
+        {post.data.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <hr class="divider" />
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  <hr class="divider" />
+
+  <nav class="post-nav">
+    {prevPost ? (
+      <a href={`/blog/${prevPost.id.replace(/\.md$/, '')}/`} class="post-nav__link post-nav__link--prev">
+        <span class="post-nav__label">&larr; Older</span>
+        <span class="post-nav__title">{prevPost.data.title}</span>
+      </a>
+    ) : <div />}
+    {nextPost ? (
+      <a href={`/blog/${nextPost.id.replace(/\.md$/, '')}/`} class="post-nav__link post-nav__link--next">
+        <span class="post-nav__label">Newer &rarr;</span>
+        <span class="post-nav__title">{nextPost.data.title}</span>
+      </a>
+    ) : <div />}
+  </nav>
+
+</Page>
+
+<style>
+  .post-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .post-header__date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text-dim);
+  }
+
+  .post-header__title {
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
+    margin-top: var(--space-sm);
+  }
+
+  .post-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+  }
+
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
+  }
+
+  .post-nav__link {
+    text-decoration: none;
+    color: var(--color-text);
+    padding: var(--space-md);
+    border: var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.15s ease;
+  }
+
+  .post-nav__link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .post-nav__link--next {
+    text-align: right;
+  }
+
+  .post-nav__label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  .post-nav__title {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+</style>

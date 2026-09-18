@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner container">
+    <p class="footer__copy">&copy; {year} Shubhendu Poothia &middot; Currently at Red Hat</p>
+    <div class="footer__right">
+      <a href="https://github.com/poothia" target="_blank" rel="noopener noreferrer" class="footer__link">GitHub</a>
+      <a href="https://linkedin.com/in/shubhendu-poothia" target="_blank" rel="noopener noreferrer" class="footer__link">LinkedIn</a>
+      <a href="mailto:poothia.shubhendu@gmail.com" class="footer__link">Email</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--space-xl);
+    border-top: var(--border);
+    padding-block: var(--space-lg);
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .footer__copy {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+  }
+
+  .footer__right {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .footer__link {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+  }
+
+  .footer__link:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 600px) {
+    .footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

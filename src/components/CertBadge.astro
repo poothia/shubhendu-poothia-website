@@ -1,0 +1,39 @@
+---
+export interface Props {
+  name: string;
+  url: string;
+}
+
+const { name, url } = Astro.props;
+---
+
+<a href={url} target="_blank" rel="noopener noreferrer" class="cert-badge">
+  <span class="cert-badge__icon">&#10003;</span>
+  <span class="cert-badge__name">{name}</span>
+</a>
+
+<style>
+  .cert-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-sm) var(--space-md);
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 0.8125rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .cert-badge:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .cert-badge__icon {
+    color: var(--color-accent);
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+</style>

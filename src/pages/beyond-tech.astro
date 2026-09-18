@@ -1,0 +1,58 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Beyond Tech" description="When I'm not building cloud platforms, I perform comedy magic.">
+
+  <div class="section-header">
+    <span class="section-header__eyebrow">Personal</span>
+    <h1>Beyond Tech</h1>
+  </div>
+
+  <hr class="divider" />
+
+  <section class="beyond">
+    <p class="beyond__text">
+      When I'm not architecting cloud platforms or contributing to open source, I perform comedy magic. It started as a hobby and turned into something much bigger — I've performed for the embassies of Denmark, Germany, and Yemen, toured a travelling theatre show called <em>K(night) of Awkwardness</em>, and been featured on News18 India live.
+    </p>
+    <p class="beyond__text">
+      It's a completely different world from Kubernetes and GitOps, but the overlap is real: both require reading the room, understanding systems, and delivering something nobody expected.
+    </p>
+    <p class="beyond__text">
+      For my magic work, show details, and booking inquiries, visit:
+    </p>
+    <a href="https://whitecrowmagic.com" target="_blank" rel="noopener noreferrer" class="beyond__link">
+      whitecrowmagic.com &rarr;
+    </a>
+  </section>
+
+</Page>
+
+<style>
+  .beyond {
+    max-width: 60ch;
+  }
+
+  .beyond__text {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-lg);
+  }
+
+  .beyond__link {
+    display: inline-block;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: var(--space-sm) 0;
+    border-bottom: 2px solid var(--color-accent);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .beyond__link:hover {
+    color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+  }
+</style>

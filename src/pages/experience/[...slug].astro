@@ -1,0 +1,73 @@
+---
+import Page from '../../layouts/Page.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const roles = await getCollection('tech');
+  return roles.map((role) => ({
+    params: { slug: role.id.replace(/\.md$/, '') },
+    props: { role },
+  }));
+}
+
+const { role } = Astro.props;
+const { Content } = await render(role);
+---
+
+<Page title={role.data.title} description={`${role.data.role} at ${role.data.company}`}>
+
+  <div style="margin-bottom: var(--space-lg);">
+    <a href="/experience/" class="btn" style="font-size: 0.75rem; padding: var(--space-xs) var(--space-sm);">&larr; All Roles</a>
+  </div>
+
+  <div class="role-header">
+    <span class="role-header__date">{role.data.startDate} — {role.data.endDate}</span>
+    <h1 class="role-header__company">{role.data.company}</h1>
+    <p class="role-header__role">{role.data.role}</p>
+    <p class="role-header__location text-dim">{role.data.location}</p>
+  </div>
+
+  <div class="skills-grid" style="margin-block: var(--space-lg);">
+    {role.data.skills.map((skill: string) => (
+      <span class="tag tag--accent">{skill}</span>
+    ))}
+  </div>
+
+  <hr class="divider divider--accent" />
+
+  <article class="prose">
+    <Content />
+  </article>
+
+</Page>
+
+<style>
+  .role-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .role-header__date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-dim);
+  }
+
+  .role-header__company {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin-top: var(--space-sm);
+  }
+
+  .role-header__role {
+    font-size: 1.0625rem;
+    color: var(--color-accent);
+    margin-top: var(--space-sm);
+  }
+
+  .role-header__location {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    margin-top: var(--space-xs);
+  }
+</style>

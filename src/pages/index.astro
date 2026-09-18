@@ -1,0 +1,315 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const techRoles = (await getCollection('tech')).sort((a, b) => a.data.order - b.data.order);
+const latestPost = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
+const talks = (await getCollection('talks')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const credentials = [
+  'CKA', 'CKAD', 'KCNA', 'LFCA', 'AWS CCP',
+  'KubeCon Speaker', 'Open Source Contributor',
+];
+---
+
+<Base title="Home">
+  <Nav />
+
+  <!-- HERO: Photo + intro side by side -->
+  <section class="hero">
+    <div class="hero__inner container">
+      <div class="hero__photo-wrap">
+        <img
+          src="/images/headshot.jpg"
+          alt="Shubhendu Poothia"
+          class="hero__photo"
+          width="320"
+          height="320"
+          loading="eager"
+        />
+      </div>
+      <div class="hero__text">
+        <h1>Shubhendu Poothia</h1>
+        <p class="hero__role">Cloud Native Architect</p>
+        <p class="hero__bio">
+          10+ years building and consulting on enterprise cloud platforms — Kubernetes, OpenShift, OpenStack, GitOps. Currently at Red Hat.
+        </p>
+        <div class="hero__links">
+          <a href="https://github.com/poothia" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/in/shubhendu-poothia" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:poothia.shubhendu@gmail.com">Email</a>
+        </div>
+        <div class="hero__creds">
+          {credentials.map((c) => (
+            <span class="tag tag--accent">{c}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER: Alt background for visual rhythm -->
+  <section class="section section--alt">
+    <div class="container">
+      <span class="section-header__eyebrow">Career</span>
+      <h2>Experience</h2>
+      <div class="roles">
+        {techRoles.map((role) => (
+          <a href={`/experience/${role.id.replace(/\.md$/, '')}/`} class="role-row">
+            <div class="role-row__left">
+              <span class="role-row__company">{role.data.company}</span>
+              <span class="role-row__title">{role.data.role}</span>
+            </div>
+            <span class="role-row__period">{role.data.startDate} — {role.data.endDate}</span>
+          </a>
+        ))}
+      </div>
+      <a href="/experience/" class="btn" style="margin-top: var(--space-lg);">View full experience &rarr;</a>
+    </div>
+  </section>
+
+  <!-- WRITING + TALKS: Side by side -->
+  <section class="section">
+    <div class="container">
+      <div class="two-col">
+        <!-- Writing -->
+        <div class="two-col__block">
+          <span class="section-header__eyebrow">Writing</span>
+          <h2>Latest post</h2>
+          {latestPost && (
+            <a href={`/blog/${latestPost.id.replace(/\.md$/, '')}/`} class="card post-card">
+              <span class="card__label">
+                {latestPost.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </span>
+              <h3 class="card__title">{latestPost.data.title}</h3>
+              <p class="post-card__desc">{latestPost.data.description}</p>
+            </a>
+          )}
+          <a href="/blog/" class="btn" style="margin-top: var(--space-md);">All posts &rarr;</a>
+        </div>
+
+        <!-- Talks -->
+        <div class="two-col__block">
+          <span class="section-header__eyebrow">Speaking</span>
+          <h2>Talks</h2>
+          <div class="mini-talks">
+            {talks.slice(0, 2).map((talk) => (
+              <div class="mini-talk">
+                <span class="mini-talk__event">{talk.data.event}</span>
+                <span class="mini-talk__detail">{talk.data.title}</span>
+                <span class="mini-talk__meta">
+                  {talk.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} · {talk.data.location}
+                </span>
+              </div>
+            ))}
+          </div>
+          <a href="/talks/" class="btn" style="margin-top: var(--space-md);">All talks &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
+
+<style>
+  /* === Hero === */
+  .hero {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .hero__inner {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--space-2xl);
+    }
+  }
+
+  .hero__photo-wrap {
+    flex-shrink: 0;
+  }
+
+  .hero__photo {
+    width: 200px;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+  }
+
+  @media (min-width: 768px) {
+    .hero__photo {
+      width: 260px;
+    }
+  }
+
+  .hero__text {
+    flex: 1;
+  }
+
+  .hero__role {
+    color: var(--color-accent);
+    font-weight: 500;
+    font-size: 1.0625rem;
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__bio {
+    color: var(--color-text-dim);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    max-width: 48ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__links {
+    display: flex;
+    gap: var(--space-md);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  /* === Career roles === */
+  .roles {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-lg);
+  }
+
+  .role-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding: var(--space-md) 0;
+    border-bottom: var(--border);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background 0.15s ease;
+  }
+
+  .role-row:first-child {
+    border-top: var(--border);
+  }
+
+  .role-row:hover {
+    background: var(--color-surface-raised);
+  }
+
+  .role-row__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .role-row__company {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .role-row__title {
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+
+  .role-row__period {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-text-dim);
+    white-space: nowrap;
+  }
+
+  /* === Two column (writing + talks) === */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 768px) {
+    .two-col {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  .two-col__block h2 {
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Post card inside two-col */
+  .post-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .post-card:hover {
+    color: var(--color-text);
+  }
+
+  .post-card__desc {
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+    line-height: 1.6;
+    margin-top: var(--space-xs);
+  }
+
+  /* Mini talks */
+  .mini-talks {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .mini-talk {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: var(--space-md) 0;
+    border-bottom: var(--border);
+  }
+
+  .mini-talk:first-child {
+    border-top: var(--border);
+  }
+
+  .mini-talk__event {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .mini-talk__detail {
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+
+  .mini-talk__meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-text-dim);
+    margin-top: var(--space-xs);
+  }
+</style>

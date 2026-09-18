@@ -1,0 +1,43 @@
+---
+export interface Props {
+  company: string;
+  role: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  skills: string[];
+  slug: string;
+}
+
+const { company, role, location, startDate, endDate, skills, slug } = Astro.props;
+---
+
+<div class="timeline__item">
+  <div class="timeline__date">{startDate} — {endDate} &bull; {location}</div>
+  <a href={`/experience/${slug}/`} class="timeline__title-link">
+    <h3 class="timeline__title">{company}</h3>
+  </a>
+  <div class="timeline__subtitle">{role}</div>
+  <slot />
+  <div class="skills-grid" style="margin-top: var(--space-md);">
+    {skills.map((skill) => (
+      <span class="tag">{skill}</span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .timeline__title-link {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .timeline__title-link:hover {
+    color: var(--color-accent);
+    background: none;
+  }
+
+  .timeline__title-link:hover .timeline__title {
+    color: var(--color-accent);
+  }
+</style>
