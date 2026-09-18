@@ -1,7 +1,7 @@
 ---
-title: "Cloud Consultant III — Specialist Adoption Architect"
+title: "Specialist Adoption Architect"
 company: "Red Hat"
-role: "Cloud Consultant-III (Specialist)"
+role: "Specialist Adoption Architect"
 location: "Bengaluru, India"
 startDate: "Nov 2022"
 endDate: "Present"
