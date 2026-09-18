@@ -14,7 +14,7 @@ In cloud architecture, you take a mess of legacy systems, vendor lock-in, and or
 
 ## Systems Thinking Applies Everywhere
 
-When I presented at KubeCon, I realized the skills transfer directly. Timing, structure, audience awareness — these aren't peripheral. They're the difference between a talk that resonates and one that loses the room in the first five minutes.
+When I presented Anywhere at any Summit, I have realized the skills transfer directly. Timing, structure, audience awareness — these aren't peripheral. They're the difference between a talk that resonates and one that loses the room in the first five minutes.
 
 Every production system and every performance shares the same truth: you need to have thought through the failure modes before you go live.
 
